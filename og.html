@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OG 이미지 만들기 — 스파이디 트래커</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  html{ -webkit-text-size-adjust:none; text-size-adjust:none; }
+  body{ background:#04121f; color:#eaf6ff; padding:20px; text-align:center; display:block; }
+  h1{ font-size:14px; color:#f2a825; margin-bottom:14px; }
+  canvas{ image-rendering:pixelated; max-width:100%; border:3px solid #2aa8d8; }
+  button{ margin-top:14px; padding:12px 20px; background:#e0362f; color:#fff; border:3px solid #06131d;
+          font-size:13px; cursor:pointer; }
+  p{ font-size:13px; margin-top:12px; color:#9dc3da; line-height:1.6; }
+</style>
+</head>
+<body>
+  <h1>KAKAO / OG 미리보기 이미지</h1>
+  <canvas id="og" width="1200" height="630"></canvas>
+  <br><button id="save">og.png 저장</button>
+  <p>이 버튼으로 저장한 <b>og.png</b> 를 프로젝트 루트에 넣으면<br>카카오톡 공유 시 썸네일로 표시됩니다.</p>
+
+<script src="js/pixelfont.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/face.js"></script>
+<script src="js/sprites.js"></script>
+<script>
+(function(){
+  var LW = 240, LH = 126, S = 5;
+  var buf = E.surf(LW, LH), g = buf.x;
+  var view = document.getElementById('og'), vx = view.getContext('2d');
+
+  function draw(){
+    /* 하늘 */
+    E.vgrad(g, 0, 0, LW, LH, ['#080618','#0c0a22','#12102e','#191539','#211a45','#2b1f4e','#371f4f','#45234c']);
+    var r = E.rng(11);
+    for (var i=0;i<70;i++) g.fillStyle = r()<0.25?'#fff':'#b9c7ff', g.fillRect((r()*LW)|0,(r()*LH*0.7)|0,1,1);
+    E.circle(g, 210, 22, 10, '#f6f1c9');
+    E.circle(g, 213, 19, 2, '#ded6a8');
+    g.globalAlpha=.1; E.circle(g, 210, 22, 16, '#f6f1c9'); g.globalAlpha=1;
+
+    /* 스카이라인 */
+    var r2 = E.rng(303);
+    for (i=0;i<16;i++){
+      var bw = 14+Math.floor(r2()*24), bh = 30+Math.floor(r2()*66);
+      var bx = Math.floor(r2()*(LW+20))-10;
+      E.rect(g, bx, LH-bh, bw, bh, i%2 ? '#241c50' : '#2b2159');
+      E.rect(g, bx, LH-bh, bw, 2, '#372a6b');
+      for (var wy=LH-bh+5; wy<LH-3; wy+=7)
+        for (var wx=bx+3; wx<bx+bw-4; wx+=6)
+          if (r2()<0.4) E.rect(g, wx, wy, 2, 3, r2()<0.12?'#7fd2ff':'#ffd97a');
+      if (r2()<0.35) E.spr(g, SPR.waterTower, bx+(bw>>1)-6, LH-bh-14);
+    }
+    /* 앞쪽 어두운 건물 */
+    E.rect(g, -4, 96, 40, LH, '#090614');
+    E.rect(g, 206, 88, 40, LH, '#090614');
+
+    /* 스윙하는 스파이디 */
+    var hx = 92, hy = 70, ax = 172, ay = 26;
+    E.web(g, hx, hy, ax, ay, 3, '#dfe6ff');
+    E.line(g, hx, hy, hx+(ax-hx)*.16, hy+(ay-hy)*.16, '#ffffff', 2);
+    g.fillStyle='#eef3ff'; g.fillRect(ax-2,ay,5,1); g.fillRect(ax,ay-2,1,5);
+    SPR.sprPivot(g, SPR.swing, hx, hy, -0.55, SPR.swingPivot.x, SPR.swingPivot.y, false);
+
+    /* 타이틀 */
+    PF.fit(g, '나만의 스파이디 트래커', LW/2, 13, LW-16, 15, '#ffffff', 'center', true, '#2b0605');
+    PF.fit(g, '내 얼굴로 수트 업 · 직접 스윙 · MJ 구출', LW/2, 33, LW-34, 8, '#ffe9a8', 'center', false, '#241000');
+    PF.drawS(g, 'SPIDEY  TRACKER', LW/2, LH-16, 11, '#3fae6a', '#031a10', 'center', true);
+
+    g.globalAlpha=.18; g.fillStyle='#000';
+    g.fillRect(0,0,LW,4); g.fillRect(0,LH-4,LW,4);
+    g.globalAlpha=1;
+
+    vx.imageSmoothingEnabled = false;
+    vx.drawImage(buf.c, 0, 0, LW*S, LH*S);
+  }
+
+  function boot(){ draw(); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ PF.clear(); boot(); });
+  boot();
+
+  document.getElementById('save').addEventListener('click', function(){
+    view.toBlob(function(b){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(b); a.download = 'og.png';
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 400);
+    }, 'image/png');
+  });
+})();
+</script>
+</body>
+</html>

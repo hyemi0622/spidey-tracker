@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="theme-color" content="#0b2740">
+<meta name="color-scheme" content="dark">
+<title>스파이디 트래커</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="스파이디 트래커">
+<meta property="og:title" content="스파이디 트래커">
+<meta property="og:description" content="내 얼굴로 수트 업. 직접 거미줄을 타고 뉴욕을 건너 MJ를 구하세요.">
+<meta property="og:image" content="https://YOUR-ID.github.io/spidey-tracker/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://YOUR-ID.github.io/spidey-tracker/">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="css/style.css?v=1788174286">
+</head>
+<body data-view="map">
+
+<div class="app">
+  <div class="frame">
+    <div class="f" id="f11"></div><div class="fh" id="f12"></div><div class="f" id="f13"></div>
+    <div class="fv" id="f21"></div>
+    <div class="screen" id="screen">
+      <canvas id="mapCanvas" class="view view-map"></canvas>
+      <canvas id="stageCanvas" class="view view-stage"></canvas>
+      <div class="map-hud ui-map" id="mapHud">
+        <div class="grid"></div><div class="hm"></div><div class="vm"></div>
+        <div class="radarWrap"><canvas id="radarCanvas" width="100" height="100"></canvas></div>
+        <div class="globe"></div><div class="ctr"></div>
+      </div>
+
+      <div class="ui-layer ui-stage">
+        <div class="stage-top"><div class="titleplate small"><img src="assets/img/tracker_logo3.png" alt=""></div></div>
+        <div class="stage-bottom" id="stageBottom"></div>
+      </div>
+
+      <!-- ══ 인트로 : 거미가 줄을 타고 내려옴 ══ -->
+      <div class="intro" id="intro">
+        <canvas class="mark" id="introMark" width="120" height="120"></canvas>
+        <span class="drop"></span>
+        <div class="spider" id="introSpider"></div>
+        <div class="intro-body">
+          <p>스파이디 트래커에 오신 것을 환영합니다.<br>
+             직접 거미줄을 타고 뉴욕을 건너<br>나만의 MJ를 구해보세요.</p>
+          <div class="dots" id="introDots"></div>
+          <p class="sub">설정을 선택하고 추적을 시작하세요</p>
+          <div class="row">
+            <button id="sndOn">사운드 켜기</button>
+            <button id="sndOff" class="off">사운드 끄기</button>
+          </div>
+        </div>
+        <div class="boot" id="bootLog"></div>
+      </div>
+    </div>
+    <div class="fv" id="f23"></div>
+
+    <div class="f" id="f31"></div><div class="fh" id="f32"></div><div class="f" id="f33"></div>
+
+    <div class="f" id="f41"></div>
+    <div class="barzone">
+      <button class="ticker" id="btnGuest"><span id="tickerText">사운드 옵션 선택</span></button>
+      <button class="ui-btn sl-white btn-sound" id="btnSound" aria-label="소리"></button>
+    </div>
+    <div class="f" id="f43"></div>
+
+    <div class="f" id="f51"></div><div class="fh" id="f52"></div><div class="f" id="f53"></div>
+  </div>
+
+  <!-- 프레임 위에 겹치는 요소들 -->
+  <button class="ui-btn btn-menu" id="btnMenu" aria-label="정보"></button>
+  <button class="ui-btn sl-white btn-spider" id="btnSpider" aria-label="시작"></button>
+  <div class="titleplate"><img src="assets/img/tracker_logo3.png" alt="스파이디 트래커"></div>
+  <div class="chips">
+    <button class="chip chip-g" id="chipSight" aria-label="목격 스캔"></button>
+    <button class="chip chip-r" id="chipPin" aria-label="공유"></button>
+  </div>
+  <button class="mascot" id="mascot" aria-label="시작"></button>
+</div>
+
+<!-- ══ 신분 확인 ══ -->
+<div class="overlay" id="idOverlay" hidden>
+  <div class="panel">
+    <div class="panel-hd"><span>IDENTITY VERIFICATION</span><button class="x" id="idClose">X</button></div>
+    <p class="panel-sub">스파이더맨과 <b>M.J.</b>의 신분을 확인합니다.<br>
+      얼굴이 <b>점선 원에 꽉 차도록</b> 맞춰주세요.<br>
+      <small>드래그로 이동 · 슬라이더로 확대</small></p>
+    <div class="slots">
+      <div class="slot" data-who="me">
+        <div class="slot-title"><span class="dot dot-r"></span>SPIDER-MAN</div>
+        <div class="crop" data-role="crop">
+          <canvas data-role="cropc" width="220" height="220"></canvas>
+          <div class="ph" data-role="ph">＋<br><small>사진 선택</small></div>
+        </div>
+        <input class="zoom" data-role="zoom" type="range" min="100" max="320" value="150">
+        <input class="zoom" data-role="rot" type="range" min="-45" max="45" value="0">
+        <input class="nm" data-role="nm" type="text" placeholder="내 이름" maxlength="8" autocomplete="off">
+        <input class="file" data-role="file" type="file" accept="image/*" hidden>
+      </div>
+      <div class="slot" data-who="mj">
+        <div class="slot-title"><span class="dot dot-g"></span>M.J.</div>
+        <div class="crop" data-role="crop">
+          <canvas data-role="cropc" width="220" height="220"></canvas>
+          <div class="ph" data-role="ph">＋<br><small>사진 선택</small></div>
+        </div>
+        <input class="zoom" data-role="zoom" type="range" min="100" max="320" value="150">
+        <input class="zoom" data-role="rot" type="range" min="-45" max="45" value="0">
+        <input class="nm" data-role="nm" type="text" placeholder="MJ 이름" maxlength="8" autocomplete="off">
+        <input class="file" data-role="file" type="file" accept="image/*" hidden>
+      </div>
+    </div>
+    <div class="preview-row">
+      <div class="pv-box"><canvas data-pv="me" width="50" height="60"></canvas><span>수트 업 미리보기</span></div>
+      <div class="pv-box"><canvas data-pv="mj" width="50" height="60"></canvas><span>M.J.</span></div>
+    </div>
+    <p class="note">사진은 내 폰 안에서만 픽셀로 변환됩니다. 서버 업로드 없음.</p>
+    <button class="go" id="goBtn">SUIT UP</button>
+  </div>
+</div>
+
+<!-- ══ 방명록 ══ -->
+<div class="overlay" id="gbPanel" hidden>
+  <div class="panel gb">
+    <div class="panel-hd"><span>MESSAGE CENTER</span>
+      <span class="gb-count-wrap"><b id="gbCount">0</b></span>
+      <button class="x" id="gbClose">X</button></div>
+    <div class="gb-wire"></div>
+    <div class="gb-list" id="gbList"></div>
+    <div class="gb-status" id="gbStatus"></div>
+    <div class="gb-form">
+      <input id="gbName" class="gb-name-in" type="text" maxlength="12" placeholder="이름" autocomplete="off">
+      <input id="gbInput" class="gb-msg-in" type="text" maxlength="200" placeholder="목격담을 남겨주세요" autocomplete="off">
+      <button id="gbSend" class="gb-send">전송</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 안내 ══ -->
+<div class="overlay" id="aboutOverlay" hidden>
+  <div class="panel">
+    <div class="panel-hd"><span>ABOUT</span><button class="x" id="aboutClose">X</button></div>
+    <div class="about-body">
+      <p><b>스파이디 트래커</b></p>
+      <p>1. 오른쪽 위 거미 버튼을 눌러 시작<br>
+         2. 내 사진 · MJ 사진 등록<br>
+         3. 수트 업 → 직접 거미줄을 타고 목표 거리까지<br>
+         4. MJ 구출 → 데일리 뷰글 1면 / 옥상 엔딩</p>
+      <p><b>조작</b> — 누르고 있으면 거미줄이 나가고, 떼면 놓습니다.</p>
+      <p><b>주의</b> — 진 그레이 · 더 핸드 · 스콜피온에 닿으면 죽습니다.</p>
+      <p class="dim">모든 처리는 브라우저에서만 실행됩니다.<br>Fan-made. Spider-Man © Marvel / Sony Pictures.</p>
+    </div>
+  </div>
+</div>
+
+<div class="prog" id="prog" hidden>
+  <div class="prog-label" id="progLabel">GIF 인코딩 중</div>
+  <div class="prog-track"><div class="prog-bar" id="progBar"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js?v=1788174286"></script>
+<script src="js/pixelfont.js?v=1788174286"></script>
+<script src="js/engine.js?v=1788174286"></script>
+<script src="js/face.js?v=1788174286"></script>
+<script src="js/sprites.js?v=1788174286"></script>
+<script src="js/gif.js?v=1788174286"></script>
+<script src="js/audio.js?v=1788174286"></script>
+<script src="js/stage.js?v=1788174286"></script>
+<script src="js/city.js?v=1788174286"></script>
+<script src="js/map.js?v=1788174286"></script>
+<script src="js/game.js?v=1788174286"></script>
+<script src="js/cinema.js?v=1788174286"></script>
+<script src="js/guestbook.js?v=1788174286"></script>
+<script src="js/main.js?v=1788174286"></script>
+</body>
+</html>

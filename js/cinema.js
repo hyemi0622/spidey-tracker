@@ -236,7 +236,7 @@ var CINEMA = (function () {
     for (var ci = 0; ci < CAND.length; ci++) {
       var size = CAND[ci];
       if (size > maxSize) continue;
-      var lh = Math.round(size * 1.06), ok = lines.length * lh <= boxH, i;
+      var lh = Math.round(size * 1.26), ok = lines.length * lh <= boxH, i;   /* 1.06 이면 줄끼리 붙어 안 읽힌다 */
       for (i = 0; ok && i < lines.length; i++) if (PF.width(lines[i], size, true) > boxW) ok = false;
       if (!ok) continue;
       for (i = 0; i < lines.length; i++) PF.draw(g, lines[i], x, y + i * lh, size, color, 'left', true);
@@ -253,8 +253,13 @@ var CINEMA = (function () {
   function drawBugle(g, w, h, intro) {
     E.rect(g, 0, 0, w, h, '#15120e');
     var av = AV();
-    var ph = Math.round(av * 0.60), py = Math.round((av - ph) / 2);
+    /* 위는 로고, 아래는 버튼바를 피한 실제 여유 공간.
+       av 안에 반드시 들어가게 잘라서 어떤 화면비에서도 버튼이 신문을 못 가린다. */
+    var top0 = Math.min(topInset + 3, Math.round(av * 0.12));
+    var availH = Math.max(24, av - top0 - 7);   /* 7 = 지면 그림자(2px) + 여유 */
     var px = 5, pw = w - 10, m = 4;
+    var ph = Math.min(availH, Math.round(pw * 1.45));
+    var py = top0 + Math.round((availH - ph) / 2);
     var cx = px + m, inner = pw - m * 2;
 
     paperRect = { x: px - 1, y: py - 1, w: pw + 2, h: ph + 2 };

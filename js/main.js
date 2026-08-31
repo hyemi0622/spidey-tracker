@@ -247,19 +247,33 @@
     });
   }
 
-  /* 상단 로고가 화면 위를 덮는 높이 → 시네마 자막이 그 아래에서 시작하도록 */
-  function measureTopInset() {
-    var sc = $('#screen'), tp = document.querySelector('.titleplate:not(.small)');
-    if (!sc || !tp || !window.CINEMA || !CINEMA.setTopInset) return;
-    var sr = sc.getBoundingClientRect(), tr = tp.getBoundingClientRect();
+  var stageBottom = $('#stageBottom');
+
+  /* 화면 위(로고)/아래(버튼바)가 가리는 높이.
+     한 번만 재면 폰트 로딩·버튼 줄바꿈·주소창 여닫힘 때 값이 어긋나
+     신문이 버튼에 가려진다 → 크기가 바뀔 때마다 다시 잰다. */
+  function measureInsets() {
+    var sc = $('#screen');
+    if (!sc || !window.CINEMA || !CINEMA.setTopInset) return;
+    var sr = sc.getBoundingClientRect();
     if (!sr.height) return;
-    var over = Math.max(0, tr.bottom - sr.top);
+    var bh = stageBottom && stageBottom.children.length
+      ? stageBottom.getBoundingClientRect().height : 0;
+    CINEMA.setInset(Math.round(bh / sr.height * STAGE.H));
+    var tp = document.querySelector('.titleplate:not(.small)');
+    var over = tp ? Math.max(0, tp.getBoundingClientRect().bottom - sr.top) : 0;
     CINEMA.setTopInset(Math.round(over / sr.height * STAGE.H));
   }
-  window.addEventListener('resize', measureTopInset);
+  window.addEventListener('resize', measureInsets);
+  window.addEventListener('orientationchange', measureInsets);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureInsets);
+  if (window.ResizeObserver) {
+    var insetRO = new ResizeObserver(function () { measureInsets(); });
+    insetRO.observe(stageBottom);
+    insetRO.observe($('#screen'));
+  }
 
   /* ══════════════ 뷰 전환 ══════════════ */
-  var stageBottom = $('#stageBottom');
   function setView(v) {
     document.body.dataset.view = v;
     if (v === 'map') { MAP.start(); STAGE.stop(); }
@@ -275,12 +289,7 @@
       stageBottom.appendChild(b);
     });
     /* 버튼바가 가리는 만큼 시네마 구도를 위로 올린다 */
-    requestAnimationFrame(function () {
-      var scr = $('#screen').getBoundingClientRect().height;
-      var bh = items.length ? stageBottom.getBoundingClientRect().height : 0;
-      CINEMA.setInset(scr ? Math.round(bh / scr * STAGE.H) : 0);
-      measureTopInset();
-    });
+    requestAnimationFrame(measureInsets);
   }
   function setTop(show) { document.body.dataset.top = show ? 'on' : 'off'; }
 

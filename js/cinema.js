@@ -67,7 +67,7 @@ var CINEMA = (function () {
       var fr = SPR.walk[Math.floor(T * 9) % 4];
       g.globalAlpha = 0.35; E.rect(g, suit.walkX - 1, floor + 1, 17, 2, '#000'); g.globalAlpha = 1;
       E.spr(g, fr, suit.walkX, floor - 23);
-      PF.fit(g, 'SUIT  UP', w / 2, 18, w - 30, 16, '#e0362f', 'center', true, '#2b0605');
+      PF.fit(g, 'SUIT  UP', w / 2, Math.max(18, topInset + 6), w - 30, 16, '#e0362f', 'center', true, '#2b0605');
       return;
     }
 
@@ -424,8 +424,10 @@ var CINEMA = (function () {
     /* 자막 */
     var fade = E.clamp((T - 0.4) / 0.8, 0, 1);
     g.globalAlpha = fade;
-    PF.block(g, '그날 밤, 뉴욕에서 가장 높은 곳', w / 2, 12, w - 20, 12, '#ffffff', 'center', true, '#2b1000', 2);
-    PF.fit(g, D.meName + '  &  ' + D.mjName, w / 2, 34, w - 30, 10, '#ffe9a8', 'center', false, '#2b1000');
+    var capY = Math.max(12, topInset + 6);
+    /* 자막이 두 줄로 접힐 수도 있으니 실제 사용 높이 아래에 이름을 놓는다 */
+    var capH = PF.block(g, '그날 밤, 뉴욕에서 가장 높은 곳', w / 2, capY, w - 20, 12, '#ffffff', 'center', true, '#2b1000', 2);
+    PF.fit(g, D.meName + '  &  ' + D.mjName, w / 2, capY + capH + 2, w - 30, 10, '#ffe9a8', 'center', false, '#2b1000');
     g.globalAlpha = 1;
     if (T > 1.6) {
       g.globalAlpha = 0.6 + (Math.sin(T * 3) * 0.5 + 0.5) * 0.4;

@@ -23,6 +23,11 @@
     lastTouch = now;
   }, { passive: false });
   document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+  /* 길게 누를 때 뜨는 복사/이미지 저장 메뉴 차단 (입력칸에서는 그대로 둔다) */
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target && e.target.closest && e.target.closest('input,textarea')) return;
+    e.preventDefault();
+  }, { passive: false });
 
   /* ── toast ── */
   var toastEl = $('#toast'), toastT = 0;
@@ -242,6 +247,17 @@
     });
   }
 
+  /* 상단 로고가 화면 위를 덮는 높이 → 시네마 자막이 그 아래에서 시작하도록 */
+  function measureTopInset() {
+    var sc = $('#screen'), tp = document.querySelector('.titleplate:not(.small)');
+    if (!sc || !tp || !window.CINEMA || !CINEMA.setTopInset) return;
+    var sr = sc.getBoundingClientRect(), tr = tp.getBoundingClientRect();
+    if (!sr.height) return;
+    var over = Math.max(0, tr.bottom - sr.top);
+    CINEMA.setTopInset(Math.round(over / sr.height * STAGE.H));
+  }
+  window.addEventListener('resize', measureTopInset);
+
   /* ══════════════ 뷰 전환 ══════════════ */
   var stageBottom = $('#stageBottom');
   function setView(v) {
@@ -263,6 +279,7 @@
       var scr = $('#screen').getBoundingClientRect().height;
       var bh = items.length ? stageBottom.getBoundingClientRect().height : 0;
       CINEMA.setInset(scr ? Math.round(bh / scr * STAGE.H) : 0);
+      measureTopInset();
     });
   }
   function setTop(show) { document.body.dataset.top = show ? 'on' : 'off'; }

@@ -28,6 +28,14 @@
 @media (max-width:520px){ :root{ --c:27px; --r1:27px; --r3:14px; --r4:40px; --r5:5px; } }
 
 html{ -webkit-text-size-adjust:none !important; text-size-adjust:none !important; -webkit-tap-highlight-color:transparent; }
+/* 길게 누를 때 뜨는 "복사/공유" 말풍선과 글자 선택 막기 (입력칸은 예외) */
+html,body,.app,.frame,.screen,canvas,button,.ui-btn,.chip,.mascot,.titleplate,.intro,.panel,.overlay{
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
+  -webkit-touch-callout:none; -webkit-user-drag:none;
+}
+input,textarea,.gb-msg,.gb-name,.gb-time{
+  -webkit-user-select:text; user-select:text; -webkit-touch-callout:default;
+}
 body,.app,.panel,.overlay,.screen,.ui-layer,h1,h2,h3,p,span,div,button,input,label,small,b{
   -webkit-text-size-adjust:none !important; text-size-adjust:none !important; max-height:1000000px;
 }

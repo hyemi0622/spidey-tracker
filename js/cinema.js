@@ -10,7 +10,7 @@ var CINEMA = (function () {
     meName: '피터', mjName: 'M.J.', bust: null, mask: null
   };
 
-  var scene = 'idle', T = 0, onDone = null, inset = 0;
+  var scene = 'idle', T = 0, onDone = null, inset = 0, topInset = 0;
   var suit = {}, roofHeads = null, done = {};
 
   function W() { return STAGE.W; }
@@ -110,7 +110,7 @@ var CINEMA = (function () {
     g.drawImage(s.c, bx, by, bw * S, bh * S);
 
     if (mt > 0.2 && mt < 2.7) {
-      PF.block(g, D.meName + ', 넌 이미 스파이더맨이야.', w / 2, 14, w - 24, 11, '#ffe9a8', 'center', false, '#241000', 2);
+      PF.block(g, D.meName + ', 넌 이미 스파이더맨이야.', w / 2, Math.max(14, topInset + 8), w - 24, 11, '#ffe9a8', 'center', false, '#241000', 2);
     }
 
     if (mt > 3.85) {
@@ -460,6 +460,7 @@ var CINEMA = (function () {
   return {
     paperRect: function () { return scene === 'bugle' ? paperRect : null; },
     setInset: function (v) { inset = v | 0; },
+    setTopInset: function (v) { topInset = v | 0; },
     setCast: setCast, go: go,
     names: function () { return { me: D.meName, mj: D.mjName }; },
     scene: function () { return scene; }

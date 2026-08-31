@@ -214,9 +214,13 @@ body[data-view="stage"] .chips{ display:none; }
 .intro-body .row button.off{ color:var(--ink);
   background-image:url('../assets/ui/buttons/btn-black-1.png'),url('../assets/ui/buttons/btn-black-3.png'),url('../assets/ui/buttons/btn-black-2.png'); }
 
+/* 로딩 중 : 문구/버튼은 자리만 잡아두고 감춘다 (거미가 내려올 때 화면이 안 튄다) */
+.intro.booting .intro-body{ visibility:hidden; }
 .boot{ flex:0 0 auto; margin:4px 0 5px 10px; max-height:56px; overflow:hidden; text-align:left;
+  display:flex; flex-direction:column; justify-content:flex-end;
   font-family:'Courier New',Courier,monospace; font-size:9px; line-height:1.4;
   color:#6fa8c8; white-space:pre; pointer-events:none; }
+.boot div{ flex:0 0 auto; }
 
 /* 화면이 짧으면 인트로를 더 조인다 */
 @media (max-height:720px){
@@ -226,7 +230,7 @@ body[data-view="stage"] .chips{ display:none; }
 }
 @media (max-height:600px){
   .intro-top{ min-height:34px; }
-  .boot{ display:none; }
+  .boot{ max-height:26px; }
 }
 
 /* ══ 스테이지 UI ══ */

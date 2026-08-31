@@ -439,7 +439,7 @@
       for (var j = 0; j < el.length; j++) el[j].className = (j === di % el.length) ? 'on' : '';
       di++;
     }, 160);
-    setTimeout(function () { intro.classList.add('run'); }, 120);
+    intro.classList.add('booting');   /* 부트 로그가 끝날 때까지 문구/버튼은 감춰둔다 */
 
     /* 좌하단 부트 로그 */
     var BOOT = ['INITIALIZING SPIDEY TRACKER v4.2.0...','BOOTING CORE SERVICES [OK]',
@@ -450,10 +450,22 @@
       'BUILDING API CONNECTION POOL...','AUTHENTICATING SESSION TOKENS [OK]'];
     var bl = $('#bootLog'), bi = 0;
     var bootTimer = setInterval(function () {
-      if (bi >= BOOT.length) { clearInterval(bootTimer); return; }
-      bl.textContent = BOOT.slice(Math.max(0, bi - 5), bi + 1).join(String.fromCharCode(10));
+      if (bi >= BOOT.length) {
+        clearInterval(bootTimer);
+        /* 로딩이 끝나야 거미가 줄을 타고 내려온다 */
+        intro.classList.remove('booting');
+        intro.classList.add('run');
+        return;
+      }
+      /* 줄 단위 요소로 넣어야 아래쪽(최신 줄)이 안 잘린다 */
+      bl.innerHTML = '';
+      BOOT.slice(Math.max(0, bi - 6), bi + 1).forEach(function (t) {
+        var ln = document.createElement('div');
+        ln.textContent = t;
+        bl.appendChild(ln);
+      });
       bi++;
-    }, 260);
+    }, 150);
 
     var msgs = ['스파이디 목격담 남기기', '누가 스파이디를 봤나요?', '메시지 센터 열기'];
     var mi = 0, tickTimer = 0;

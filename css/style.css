@@ -139,7 +139,7 @@ body[data-view="stage"] .view-map, body[data-view="stage"] .ui-map{ display:none
   background:url('../assets/ui/map/horizontal_measure.png') left top/auto 100% repeat-x; opacity:.85; }
 .map-hud .vm{ position:absolute; top:0; bottom:0; left:4px; width:18px;
   background:url('../assets/ui/map/vertical_measure.png') left top/100% auto repeat-y; opacity:.85; }
-.map-hud .ctr{ position:absolute; right:52px; bottom:34px; width:24px; height:24px;
+.map-hud .ctr{ position:absolute; right:55px; bottom:37px; width:19px; height:19px;
   background:url('../assets/ui/map/map_center.png') center/contain no-repeat; }
 .map-hud .radarWrap{ position:absolute; right:10px; bottom:42px; width:78px; height:78px; }
 .map-hud .radarWrap canvas{ width:78px; height:78px; display:block; }
@@ -150,7 +150,7 @@ body[data-view="stage"] .view-map, body[data-view="stage"] .ui-map{ display:none
 .map-hud .sweep::after{ content:''; position:absolute; left:50%; top:5px; width:4px; height:34px; margin-left:-2px;
   background:linear-gradient(#c9edff,rgba(201,237,255,0)); }
 @keyframes radarSweep{ to{ transform:rotate(360deg); } }
-.map-hud .globe{ position:absolute; right:6px; bottom:80px; width:26px; height:26px;
+.map-hud .globe{ position:absolute; right:9px; bottom:82px; width:21px; height:21px;
   background:url('../assets/ui/map/globe_btn.png') center/contain no-repeat; }
 .map-pin{ position:absolute; width:34px; height:34px; margin:-17px 0 0 -17px;
   background-position:center; background-size:contain; background-repeat:no-repeat; }
@@ -181,7 +181,7 @@ body[data-view="stage"] .view-map, body[data-view="stage"] .ui-map{ display:none
 .intro-top{ position:relative; flex:1 1 auto; min-height:52px; margin-bottom:10px; }
 .intro .drop{ position:absolute; top:0; left:50%; margin-left:-1px; width:2px; height:0;
   background:#fff; box-shadow:0 0 8px #ffffff8c; }
-.intro.run .drop{ height:100%; transition:height 1.2s ease-out; }
+.intro.run .drop{ height:calc(100% - var(--sph,113px)); transition:height 1.2s ease-out; }
 .intro .spider{ position:absolute; left:50%; bottom:0; z-index:2;
   transform:translate(-50%,-260%); opacity:0; }
 .intro.run .spider{ transform:translate(-50%,0); opacity:1;

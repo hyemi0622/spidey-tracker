@@ -137,8 +137,12 @@
       var wi = new Image();
       wi.onload = function () {
         var fw = wi.naturalWidth / 82;
+        var dh = Math.round(70 * wi.naturalHeight / fw);
         sc.height = Math.round(248 * wi.naturalHeight / fw);
-        sc.style.height = Math.round(70 * wi.naturalHeight / fw) + 'px';
+        sc.style.height = dh + 'px';
+        /* 거미줄(.drop)이 거미 위에서 끝나도록 실제 높이를 알려준다 */
+        var ip = document.getElementById('intro');
+        if (ip) ip.style.setProperty('--sph', dh + 'px');
         sx2.imageSmoothingEnabled = false;
         sx2.drawImage(wi, 0, 0, fw, wi.naturalHeight, 0, 0, sc.width, sc.height);
       };

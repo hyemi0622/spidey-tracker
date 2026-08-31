@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://hyemi0622.github.io/spidey-tracker/">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="css/style.css?v=1788175106">
+<link rel="stylesheet" href="css/style.css?v=1788177324">
 </head>
 <body data-view="map">
 
@@ -42,8 +42,10 @@
       <!-- ══ 인트로 : 거미가 줄을 타고 내려옴 ══ -->
       <div class="intro" id="intro">
         <canvas class="mark" id="introMark" width="120" height="120"></canvas>
-        <span class="drop"></span>
-        <div class="spider" id="introSpider"></div>
+        <div class="intro-top">
+          <span class="drop"></span>
+          <div class="spider" id="introSpider"></div>
+        </div>
         <div class="intro-body">
           <p>스파이디 트래커에 오신 것을 환영합니다.<br>
              직접 거미줄을 타고 뉴욕을 건너<br>나만의 MJ를 구해보세요.</p>
@@ -84,8 +86,9 @@
 
 <!-- ══ 신분 확인 ══ -->
 <div class="overlay" id="idOverlay" hidden>
-  <div class="panel">
+  <div class="panel idp">
     <div class="panel-hd"><span>IDENTITY VERIFICATION</span><button class="x" id="idClose">X</button></div>
+    <div class="panel-body">
     <p class="panel-sub">스파이더맨과 <b>M.J.</b>의 신분을 확인합니다.<br>
       얼굴이 <b>점선 원에 꽉 차도록</b> 맞춰주세요.<br>
       <small>드래그로 이동 · 슬라이더로 확대</small></p>
@@ -118,6 +121,7 @@
       <div class="pv-box"><canvas data-pv="mj" width="50" height="60"></canvas><span>M.J.</span></div>
     </div>
     <p class="note">사진은 내 폰 안에서만 픽셀로 변환됩니다. 서버 업로드 없음.</p>
+    </div>
     <button class="go" id="goBtn">SUIT UP</button>
   </div>
 </div>
@@ -162,19 +166,19 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="js/config.js?v=1788175106"></script>
-<script src="js/pixelfont.js?v=1788175106"></script>
-<script src="js/engine.js?v=1788175106"></script>
-<script src="js/face.js?v=1788175106"></script>
-<script src="js/sprites.js?v=1788175106"></script>
-<script src="js/gif.js?v=1788175106"></script>
-<script src="js/audio.js?v=1788175106"></script>
-<script src="js/stage.js?v=1788175106"></script>
-<script src="js/city.js?v=1788175106"></script>
-<script src="js/map.js?v=1788175106"></script>
-<script src="js/game.js?v=1788175106"></script>
-<script src="js/cinema.js?v=1788175106"></script>
-<script src="js/guestbook.js?v=1788175106"></script>
-<script src="js/main.js?v=1788175106"></script>
+<script src="js/config.js?v=1788177324"></script>
+<script src="js/pixelfont.js?v=1788177324"></script>
+<script src="js/engine.js?v=1788177324"></script>
+<script src="js/face.js?v=1788177324"></script>
+<script src="js/sprites.js?v=1788177324"></script>
+<script src="js/gif.js?v=1788177324"></script>
+<script src="js/audio.js?v=1788177324"></script>
+<script src="js/stage.js?v=1788177324"></script>
+<script src="js/city.js?v=1788177324"></script>
+<script src="js/map.js?v=1788177324"></script>
+<script src="js/game.js?v=1788177324"></script>
+<script src="js/cinema.js?v=1788177324"></script>
+<script src="js/guestbook.js?v=1788177324"></script>
+<script src="js/main.js?v=1788177324"></script>
 </body>
 </html>

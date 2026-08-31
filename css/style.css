@@ -171,32 +171,51 @@ body[data-view="stage"] .view-map, body[data-view="stage"] .ui-map{ display:none
 .btn-sound canvas{ width:26px !important; height:21px !important; }
 
 /* ══ 인트로 ══ */
-.intro{ position:absolute; inset:0; z-index:5; background:#0b2740; overflow:hidden; }
+.intro{ position:absolute; inset:0; z-index:5; background:#0b2740; overflow:hidden;
+  display:flex; flex-direction:column; }
 .intro[hidden]{ display:none; }
 .intro .mark{ position:absolute; left:50%; top:34%; transform:translate(-50%,-50%);
   width:70%; opacity:.05; pointer-events:none; }
+
+/* 거미가 줄 타고 내려오는 칸 — 남는 높이를 전부 먹고, 화면이 짧으면 알아서 줄어든다 */
+.intro-top{ position:relative; flex:1 1 auto; min-height:52px; margin-bottom:10px; }
 .intro .drop{ position:absolute; top:0; left:50%; margin-left:-1px; width:2px; height:0;
   background:#fff; box-shadow:0 0 8px #ffffff8c; }
-.intro.run .drop{ height:26%; transition:height 1.2s ease-out; }
-.intro .spider{ position:absolute; left:50%; top:-90px; transform:translateX(-50%); opacity:0; }
-.intro.run .spider{ top:24%; opacity:1; transition:top 1.2s ease-out, opacity .4s; }
-.intro-body{ position:absolute; left:0; right:0; top:38%; text-align:center; padding:0 14px; }
-.intro-body p{ font-size:16px; line-height:1.75; color:#8fd7f5; letter-spacing:.5px; }
-.intro-body .sub{ font-size:14px; color:#7fb8d8; margin-top:8px; }
-.dots{ display:flex; gap:5px; margin:12px auto 0; justify-content:center; }
-.dots i{ width:10px; height:10px; background:#1d5d84; display:block; }
+.intro.run .drop{ height:100%; transition:height 1.2s ease-out; }
+.intro .spider{ position:absolute; left:50%; bottom:0; z-index:2;
+  transform:translate(-50%,-260%); opacity:0; }
+.intro.run .spider{ transform:translate(-50%,0); opacity:1;
+  transition:transform 1.2s ease-out, opacity .4s; }
+
+.intro-body{ flex:0 0 auto; text-align:center; padding:0 12px 4px; }
+.intro-body p{ font-size:clamp(11px,3.6vw,16px); line-height:1.65; color:#8fd7f5; letter-spacing:.3px; }
+.intro-body .sub{ font-size:clamp(10px,3.1vw,14px); color:#7fb8d8; margin-top:6px; }
+.dots{ display:flex; gap:5px; margin:9px auto 0; justify-content:center; }
+.dots i{ width:9px; height:9px; background:#1d5d84; display:block; }
 .dots i.on{ background:#7fd2ff; }
-.intro-body .row{ display:flex; gap:12px; margin-top:12px; justify-content:center; }
-.intro-body .row button{ height:36px; padding:0 18px; font-size:14px; color:#0d1620;
+.intro-body .row{ display:flex; gap:10px; margin-top:10px; justify-content:center; }
+.intro-body .row button{ height:34px; padding:0 15px; font-size:clamp(11px,3.2vw,14px); color:#0d1620;
   background-image:url('../assets/ui/buttons/btn-white-1.png'),url('../assets/ui/buttons/btn-white-3.png'),url('../assets/ui/buttons/btn-white-2.png');
   background-repeat:no-repeat,no-repeat,repeat-x;
   background-position:left top,right top,center top;
   background-size:auto 118%,auto 118%,auto 118%; }
 .intro-body .row button.off{ color:var(--ink);
   background-image:url('../assets/ui/buttons/btn-black-1.png'),url('../assets/ui/buttons/btn-black-3.png'),url('../assets/ui/buttons/btn-black-2.png'); }
-.boot{ position:absolute; left:10px; bottom:6px; max-height:58px; overflow:hidden; text-align:left;
+
+.boot{ flex:0 0 auto; margin:4px 0 5px 10px; max-height:56px; overflow:hidden; text-align:left;
   font-family:'Courier New',Courier,monospace; font-size:9px; line-height:1.4;
   color:#6fa8c8; white-space:pre; pointer-events:none; }
+
+/* 화면이 짧으면 인트로를 더 조인다 */
+@media (max-height:720px){
+  .intro-body p{ line-height:1.5; }
+  .intro-body .row{ margin-top:8px; }
+  .boot{ max-height:38px; }
+}
+@media (max-height:600px){
+  .intro-top{ min-height:34px; }
+  .boot{ display:none; }
+}
 
 /* ══ 스테이지 UI ══ */
 .stage-top{ display:none; }
@@ -235,7 +254,16 @@ body[data-top="off"] .stage-top{ display:none; }
 .panel-sub{ padding:12px 13px 4px; font-size:15px; line-height:1.6; }
 .panel-sub small{ color:var(--dim); font-size:13px; }
 .note{ padding:4px 13px 10px; font-size:13px; color:var(--dim); }
-.about-body{ padding:13px; font-size:15px; line-height:1.7; overflow-y:auto; }
+.about-body{ padding:13px; font-size:15px; line-height:1.7; overflow-y:auto;
+  -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+
+/* 신분 확인 패널: 가운데만 스크롤, SUIT UP 은 항상 바닥에 고정 */
+.panel-body{ flex:1 1 auto; min-height:0; overflow-y:auto;
+  -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+.panel.idp{ min-height:0; }
+.panel.idp > .panel-hd, .panel.idp > .go{ flex:0 0 auto; }
+.panel-body > *{ flex:0 0 auto; }
+.scroll-hint{ padding:0 13px 8px; font-size:12px; color:var(--dim); text-align:center; }
 .about-body p{ margin-bottom:11px; }
 .about-body .dim{ color:var(--dim); font-size:13px; }
 
@@ -244,7 +272,7 @@ body[data-top="off"] .stage-top{ display:none; }
 .slot-title{ display:flex; align-items:center; gap:5px; font-size:12px; margin-bottom:6px; }
 .dot{ width:8px; height:8px; display:inline-block; }
 .dot-r{ background:var(--red); } .dot-g{ background:var(--green); }
-.crop{ position:relative; width:100%; aspect-ratio:1/1; background:#041019;
+.crop{ position:relative; width:min(100%,32vh); margin-inline:auto; aspect-ratio:1/1; background:#041019;
   border:2px solid var(--line); overflow:hidden; cursor:grab; touch-action:none; }
 .crop canvas{ width:100%; height:100%; display:block; image-rendering:auto; }
 .crop .ph{ position:absolute; inset:0; display:flex; flex-direction:column;
@@ -331,3 +359,22 @@ body[data-top="off"] .stage-top{ display:none; }
 .btn-sound canvas{ width:26px !important; height:21px !important; }
 
 .slot .zoom{ margin-top:4px; }
+
+/* ══ 작은 폰 대응 ══ */
+@media (max-height:760px){
+  .panel-sub{ padding:9px 12px 3px; font-size:13px; line-height:1.5; }
+  .panel-sub small{ font-size:11px; }
+  .note{ padding:3px 12px 8px; font-size:11px; }
+  .crop{ width:min(100%,25vh); }
+  .zoom{ height:18px; margin-top:4px; }
+  .nm{ padding:6px; font-size:13px; }
+  .pv-box canvas{ width:52px; height:63px; }
+  .preview-row{ padding:6px 13px 2px; gap:12px; }
+  .go{ margin:6px 12px 10px; height:46px; font-size:15px; }
+  .panel-hd{ padding:8px 12px; font-size:13px; }
+}
+@media (max-width:400px){
+  .panel-hd{ font-size:12px; gap:6px; }
+  .slots{ gap:7px; padding:5px 10px 2px; }
+  .slot-title{ font-size:11px; }
+}

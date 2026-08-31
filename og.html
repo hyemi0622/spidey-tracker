@@ -36,9 +36,9 @@
     E.vgrad(g, 0, 0, LW, LH, ['#080618','#0c0a22','#12102e','#191539','#211a45','#2b1f4e','#371f4f','#45234c']);
     var r = E.rng(11);
     for (var i=0;i<70;i++) g.fillStyle = r()<0.25?'#fff':'#b9c7ff', g.fillRect((r()*LW)|0,(r()*LH*0.7)|0,1,1);
-    E.circle(g, 210, 22, 10, '#f6f1c9');
-    E.circle(g, 213, 19, 2, '#ded6a8');
-    g.globalAlpha=.1; E.circle(g, 210, 22, 16, '#f6f1c9'); g.globalAlpha=1;
+    E.circle(g, 212, 52, 10, '#f6f1c9');
+    E.circle(g, 215, 49, 2, '#ded6a8');
+    g.globalAlpha=.1; E.circle(g, 212, 52, 16, '#f6f1c9'); g.globalAlpha=1;
 
     /* 스카이라인 */
     var r2 = E.rng(303);
@@ -64,9 +64,9 @@
     SPR.sprPivot(g, SPR.swing, hx, hy, -0.55, SPR.swingPivot.x, SPR.swingPivot.y, false);
 
     /* 타이틀 */
-    PF.fit(g, '나만의 스파이디 트래커', LW/2, 13, LW-16, 15, '#ffffff', 'center', true, '#2b0605');
-    PF.fit(g, '내 얼굴로 수트 업 · 직접 스윙 · MJ 구출', LW/2, 33, LW-34, 8, '#ffe9a8', 'center', false, '#241000');
-    PF.drawS(g, 'SPIDEY  TRACKER', LW/2, LH-16, 11, '#3fae6a', '#031a10', 'center', true);
+    PF.fit(g, '나만의 스파이디 트래커', LW/2, 12, LW-40, 15, '#ffffff', 'center', false, '#2b0605');
+    PF.fit(g, '내 얼굴로 수트 업 · MJ 구출', LW/2, 32, LW-60, 9, '#ffe9a8', 'center', false, '#241000');
+    PF.drawS(g, 'SPIDEY  TRACKER', LW/2, LH-15, 11, '#3fae6a', '#031a10', 'center', false);
 
     g.globalAlpha=.18; g.fillStyle='#000';
     g.fillRect(0,0,LW,4); g.fillRect(0,LH-4,LW,4);

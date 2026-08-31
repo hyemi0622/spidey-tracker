@@ -22,8 +22,8 @@
      create policy "insert" on guestbook for insert with check (true);
    ============================================================ */
 window.SPIDEY_CONFIG = {
-  SUPABASE_URL: '',
-  SUPABASE_ANON_KEY: '',
+  SUPABASE_URL: 'https://apzkcpdmxgaffwwzzvug.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_r3-nmiQWoCexIDk-OquQfg_F8BEy20G',
   TABLE: 'guestbook',
   POLL_MS: 6000
 };
